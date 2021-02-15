@@ -7,7 +7,7 @@ services:
     restart: always
     networks:
       network1:
-        ipv4_address: 172.28.1.1
+        ipv4_address: 172.28.1.3
     volumes:
       - db:/var/lib/mysql
     environment:
@@ -42,3 +42,7 @@ volumes:
 
 networks:
   network1:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.28.1.0/24
