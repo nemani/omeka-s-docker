@@ -4,6 +4,3 @@
 .Ruserdata
 docker_compose_traefik
 config
-modules
-omeka
-themes
