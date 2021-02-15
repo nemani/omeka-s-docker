@@ -1,48 +1,57 @@
-version: "2"
+version: '2'
 
 services:
-  mariadb:
-    image: mariadb:latest 
+  db:
+    image: mysql:5.7
+    container_name: omeka_db
     restart: always
     networks:
-      - network1 
+      - network1
     volumes:
-      - mariadb:/var/lib/mysql
+      - db:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: blabla 
-      MYSQL_DATABASE: omeka
-      MYSQL_USER: omeka
-      MYSQL_PASSWORD: omeka
-
-  pma:
-    depends_on:
-      - mariadb
-    image: phpmyadmin/phpmyadmin:latest
-    restart: always
-    networks:
-      - network1 
-    ports:
-      - "8080:80"
-    links:
-      - mariadb:db
+      MYSQL_ROOT_PASSWORD: very_difficult_password_1
+      MYSQL_DATABASE: long_string_1
+      MYSQL_USER: long_string_2
+      MYSQL_PASSWORD: very_difficult_password_2
 
   omeka:
     depends_on:
-      - mariadb
-    image: dodeeric/omeka-s:latest 
+      - db
+    build:
+      context: .
+    container_name: omekas
     restart: always
     networks:
-      - network1 
-    ports:
-      - "80:80"
+      - network1
     links:
-      - mariadb:db
+      - db:db
     volumes:
       - omeka:/var/www/html/volume
+      - ./acme.json:/acme.json
+    labels:
+      - 'traefik.backend=omeka'
+      - 'traefik.frontend.rule=Host:indiasocialarchive.iiit.ac.in'
+
+  traefik:
+    image: traefik:latest
+    restart: always
+    networks:
+      - network1
+    command: --web --docker --docker.domain=indiasocialarchive.iiit.ac.in
+    ports:
+      - '80:80'
+      - '443:443'
+      - '8080:8080'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./traefik.toml:/traefik.toml
+      - ./acme.json:/acme.json
 
 volumes:
-  mariadb:
+  db:
   omeka:
 
 networks:
   network1:
+    external: true
