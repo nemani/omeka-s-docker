@@ -32,12 +32,10 @@ services:
       - db:db
     volumes:
       - /var/run/mysqld/mysqld.sock:/var/run/mysqld/mysqld.sock
-      - omeka:/var/www/html/volume
+      - ./omeka:/var/www/html/volume
 
 volumes:
   db:
-  omeka:
-  /var/run/mysqld/mysqld.sock:
 
 networks:
   network1:
