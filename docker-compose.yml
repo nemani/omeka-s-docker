@@ -22,6 +22,8 @@ services:
       context: .
     container_name: omekas
     restart: always
+    ports:
+      - '80:80'
     networks:
       - network1
     links:
@@ -31,20 +33,6 @@ services:
     labels:
       - 'traefik.backend=omeka'
       - 'traefik.frontend.rule=Host:indiasocialarchive.iiit.ac.in'
-
-  traefik:
-    image: traefik:latest
-    restart: always
-    networks:
-      - network1
-    command: --web --docker --docker.domain=indiasocialarchive.iiit.ac.in
-    ports:
-      - '80:80'
-      - '443:443'
-      - '8080:8080'
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ./traefik.toml:/traefik.toml
 
 volumes:
   db:
