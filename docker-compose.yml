@@ -10,10 +10,10 @@ services:
     volumes:
       - db:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: very_difficult_password_1
-      MYSQL_DATABASE: long_string_1
-      MYSQL_USER: long_string_2
-      MYSQL_PASSWORD: very_difficult_password_2
+      MYSQL_ROOT_PASSWORD: mysql_root
+      MYSQL_DATABASE: socialarchive
+      MYSQL_USER: omekas
+      MYSQL_PASSWORD: omekasPass
 
   omeka:
     depends_on:
