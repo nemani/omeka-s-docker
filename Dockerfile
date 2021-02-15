@@ -61,6 +61,6 @@ RUN rm /var/www/html/config/database.ini \
 && chmod 600 /var/www/html/.htaccess
 
 VOLUME /var/www/html/volume/
-\
+
 CMD echo "ServerName localhost" >> /etc/apache2/apache2.conf
 CMD ["apache2-foreground"]

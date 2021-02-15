@@ -31,14 +31,13 @@ services:
     links:
       - db:db
     volumes:
+      - /var/run/mysqld/mysqld.sock:/var/run/mysqld/mysqld.sock
       - omeka:/var/www/html/volume
-    labels:
-      - 'traefik.backend=omeka'
-      - 'traefik.frontend.rule=Host:indiasocialarchive.iiit.ac.in'
 
 volumes:
   db:
   omeka:
+  /var/run/mysqld/mysqld.sock:
 
 networks:
   network1:
