@@ -1,4 +1,4 @@
-version: '2'
+version: '2.3'
 
 services:
   db:
@@ -32,7 +32,9 @@ services:
       - db:db
     volumes:
       - /var/run/mysqld/mysqld.sock:/var/run/mysqld/mysqld.sock
-      - ./omeka:/var/www/html/volume
+      - type: bind
+        source: ./omeka
+        target: /var/www/html/volume
 
 volumes:
   db:

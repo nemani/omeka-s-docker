@@ -36,15 +36,15 @@ RUN unzip -q /var/www/latest_omeka_s.zip -d /var/www/ \
 &&  rm -rf /var/www/html/ \
 &&  mv /var/www/omeka-s/ /var/www/html/
 
-COPY ./imagemagick-policy.xml /etc/ImageMagick-6/policy.xml
-COPY ./.htaccess /var/www/html/.htaccess
+COPY ./omeka/config/imagemagick-policy.xml /etc/ImageMagick-6/policy.xml
+COPY ./omeka/config/.htaccess /var/www/html/.htaccess
 
 
 # Create one volume for files, config, themes and modules
 RUN mkdir -p /var/www/html/volume/config/ && mkdir -p /var/www/html/volume/files/ && mkdir -p /var/www/html/volume/modules/ && mkdir -p /var/www/html/volume/themes/
 
-COPY ./database.ini /var/www/html/volume/config/
-COPY ./local.config.php /var/www/html/volume/config/
+COPY ./omeka/config/database.ini /var/www/html/volume/config/
+COPY ./omeka/config/local.config.php /var/www/html/volume/config/
 RUN rm /var/www/html/config/database.ini \
 && ln -s /var/www/html/volume/config/database.ini /var/www/html/config/database.ini \
 && rm /var/www/html/config/local.config.php \
@@ -63,4 +63,4 @@ RUN rm /var/www/html/config/database.ini \
 VOLUME /var/www/html/volume/
 
 CMD echo "ServerName localhost" >> /etc/apache2/apache2.conf
-CMD ["apache2-foreground"]
+CMD ["sh","-c", "chown -R www-data:www-data /var/www/html/ && apache2-foreground"]
